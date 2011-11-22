@@ -1,0 +1,9 @@
+# Readme
+
+This plugin highlights the matching HTML tag when the cursor is
+positioned on a tag. It works in much the same way as the MatchParen
+plugin. 
+
+It was inspired by this question <http://stackoverflow.com/q/8168320/20388>.
+
+The latest 'release' is available on [vim.org](http://www.vim.org/scripts/script.php?script_id=3818).
