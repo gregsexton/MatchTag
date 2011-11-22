@@ -2,8 +2,27 @@
 
 This plugin highlights the matching HTML tag when the cursor is
 positioned on a tag. It works in much the same way as the MatchParen
-plugin. 
+plugin.
 
 It was inspired by this question <http://stackoverflow.com/q/8168320/20388>.
 
 The latest 'release' is available on [vim.org](http://www.vim.org/scripts/script.php?script_id=3818).
+
+## Other file types
+
+To get this to work for file types other than html that use a similar
+tag structure (e.g XML) you can do something similar to this.
+
+    cd ~/.vim/ftplugin/
+    ln -s html.vim xml.vim
+
+Windows users without `ln` could create an xml.vim file and insert the
+line:
+
+    so ~/vimfiles/ftplugin/html.vim
+
+## Screenshot
+
+Thanks to [ithaca.arpinum.org](http://ithaca.arpinum.org/) for this screenshot.
+
+![Screenshot of MatchTag](http://www.gregsexton.org/images/matchtag/matchtag.jpg)
