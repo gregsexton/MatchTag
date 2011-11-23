@@ -40,8 +40,8 @@ fu! s:GetCurrentCursorTag()
 
     let c_col  = col('.')
     let matched = matchstr(getline('.'), '\(<[^<>]*\%'.c_col.'c.\{-}>\)\|\(\%'.c_col.'c<.\{-}>\)')
-    if matched == ""
-        return matched
+    if matched == "" || matched =~ '/>$'
+        return ""
     endif
 
     let tagname = matchstr(matched, '<\zs.\{-}\ze[ >]')
@@ -51,7 +51,7 @@ endfu
 fu! s:SearchForMatchingTag(tagname, forwards)
     "returns the position of a matching tag or [0 0]
 
-    let starttag = '<'.a:tagname.'.\{-}>'
+    let starttag = '<'.a:tagname.'.\{-}/\@<!>'
     let midtag = ''
     let endtag = '</'.a:tagname.'.\{-}>'.(a:forwards?'':'\zs')
     let flags = 'nW'.(a:forwards?'':'b')
