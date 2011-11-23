@@ -53,7 +53,7 @@ fu! s:SearchForMatchingTag(tagname, forwards)
 
     let starttag = '<'.a:tagname.'.\{-}/\@<!>'
     let midtag = ''
-    let endtag = '</'.a:tagname.'.\{-}>'.(a:forwards?'':'\zs')
+    let endtag = '</'.a:tagname.'.\{-}'.(a:forwards?'':'\zs').'>'
     let flags = 'nW'.(a:forwards?'':'b')
 
     " When not in a string or comment ignore matches inside them.
