@@ -65,7 +65,12 @@ fu! s:SearchForMatchingTag(tagname, forwards)
     let stopline = a:forwards ? line('w$') : line('w0')
     let timeout = 300
 
-    return searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
+    " The searchpairpos() timeout parameter was added in 7.2
+    if v:version >= 702
+      return searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
+    else
+      return searchpairpos(starttag, midtag, endtag, flags, skip, stopline)
+    endif
 endfu
 
 fu! s:HighlightTagAtPosition(position)
