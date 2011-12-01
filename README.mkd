@@ -13,13 +13,9 @@ The latest 'release' is available on [vim.org](http://www.vim.org/scripts/script
 To get this to work for file types other than html that use a similar
 tag structure (e.g XML) you can do something similar to this.
 
-    cd ~/.vim/ftplugin/
-    ln -s html.vim xml.vim
+    echo 'runtime! ftplugin/html.vim' > ~/.vim/ftplugin/xml.vim
 
-Windows users without `ln` could create an xml.vim file and insert the
-line:
-
-    so ~/vimfiles/ftplugin/html.vim
+The xml.vim file demonstrated here is included with MatchTag.
 
 ## Screenshot
 
