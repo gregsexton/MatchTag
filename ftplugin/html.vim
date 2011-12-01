@@ -66,7 +66,7 @@ fu! s:SearchForMatchingTag(tagname, forwards)
     let timeout = 300
 
     " The searchpairpos() timeout parameter was added in 7.2
-    if v:version == 702
+    if v:version >= 702
       return searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
     else
       return searchpairpos(starttag, midtag, endtag, flags, skip, stopline)
