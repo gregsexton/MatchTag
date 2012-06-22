@@ -1,0 +1,2 @@
+runtime! ftplugin/html.vim
+
