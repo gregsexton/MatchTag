@@ -44,16 +44,21 @@ fu! s:GetCurrentCursorTag()
         return ""
     endif
 
-    let tagname = matchstr(matched, '<\zs.\{-}\ze[ >]')
+    " XML Tag definition is
+    "   (Letter | '_' | ':') (Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender)*
+    " Instead of dealing with CombiningChar and Extender, and because Vim's
+    " [:alpha:] only includes 8-bit characters, let's include all non-ASCII
+    " characters.
+    let tagname = matchstr(matched, '<\zs/\?\%([[:alpha:]_:]\|[^\x00-\x7F]\)\%([-._:[:alnum:]]\|[^\x00-\x7F]\)*')
     return tagname
 endfu
 
 fu! s:SearchForMatchingTag(tagname, forwards)
     "returns the position of a matching tag or [0 0]
 
-    let starttag = '<'.a:tagname.'.\{-}/\@<!>'
+    let starttag = '\V<'.escape(a:tagname, '\').'\.\{-}/\@<!>'
     let midtag = ''
-    let endtag = '</'.a:tagname.'.\{-}'.(a:forwards?'':'\zs').'>'
+    let endtag = '\V</'.escape(a:tagname, '\').'\.\{-}'.(a:forwards?'':'\zs').'>'
     let flags = 'nW'.(a:forwards?'':'b')
 
     " When not in a string or comment ignore matches inside them.
