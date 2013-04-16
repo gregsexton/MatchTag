@@ -40,8 +40,14 @@ fu! s:GetCurrentCursorTag()
 
     let c_col  = col('.')
     let matched = matchstr(getline('.'), '\(<[^<>]*\%'.c_col.'c.\{-}>\)\|\(\%'.c_col.'c<.\{-}>\)')
-    if matched == "" || matched =~ '/>$'
+    if matched =~ '/>$'
         return ""
+    elseif matched == ""
+        " The tag itself may be spread over multiple lines.
+        let matched = matchstr(getline('.'), '\(<[^<>]*\%'.c_col.'c.\{-}$\)\|\(\%'.c_col.'c<.\{-}$\)')
+        if matched == ""
+            return ""
+        endif
     endif
 
     " XML Tag definition is
@@ -56,9 +62,9 @@ endfu
 fu! s:SearchForMatchingTag(tagname, forwards)
     "returns the position of a matching tag or [0 0]
 
-    let starttag = '\V<'.escape(a:tagname, '\').'\.\{-}/\@<!>'
+    let starttag = '\V<'.escape(a:tagname, '\').'\%(\_s\%(\.\{-}\|\_.\{-}\%<'.line('.').'l\)/\@<!\)\?>'
     let midtag = ''
-    let endtag = '\V</'.escape(a:tagname, '\').'\.\{-}'.(a:forwards?'':'\zs').'>'
+    let endtag = '\V</'.escape(a:tagname, '\').'\_s\*'.(a:forwards?'':'\zs').'>'
     let flags = 'nW'.(a:forwards?'':'b')
 
     " When not in a string or comment ignore matches inside them.
@@ -84,9 +90,9 @@ fu! s:HighlightTagAtPosition(position)
     endif
 
     let [m_lnum, m_col] = a:position
-    exe '2match MatchParen /\(\%' . m_lnum . 'l\%' . m_col .  'c<\zs.\{-}\ze[ >]\)\|'
-                \ .'\(\%' . line('.') . 'l\%' . col('.') .  'c<\zs.\{-}\ze[ >]\)\|'
-                \ .'\(\%' . line('.') . 'l<\zs[^<> ]*\%' . col('.') . 'c.\{-}\ze[ >]\)\|'
-                \ .'\(\%' . line('.') . 'l<\zs[^<>]\{-}\ze\s[^<>]*\%' . col('.') . 'c.\{-}>\)/'
+    exe '2match MatchParen /\(\%' . m_lnum . 'l\%' . m_col .  'c<\zs.\{-}\ze[\n >]\)\|'
+                \ .'\(\%' . line('.') . 'l\%' . col('.') .  'c<\zs.\{-}\ze[\n >]\)\|'
+                \ .'\(\%' . line('.') . 'l<\zs[^<> ]*\%' . col('.') . 'c.\{-}\ze[\n >]\)\|'
+                \ .'\(\%' . line('.') . 'l<\zs[^<>]\{-}\ze\s[^<>]*\%' . col('.') . 'c.\{-}[\n>]\)/'
     let w:tag_hl_on = 1
 endfu
