@@ -56,9 +56,9 @@ endfu
 fu! s:SearchForMatchingTag(tagname, forwards)
     "returns the position of a matching tag or [0 0]
 
-    let starttag = '\V<'.escape(a:tagname, '\').'\.\{-}/\@<!>'
+    let starttag = '\V<'.escape(a:tagname, '\').'\%(\s\.\{-}/\@<!\)\?>'
     let midtag = ''
-    let endtag = '\V</'.escape(a:tagname, '\').'\.\{-}'.(a:forwards?'':'\zs').'>'
+    let endtag = '\V</'.escape(a:tagname, '\').'\s\*'.(a:forwards?'':'\zs').'>'
     let flags = 'nW'.(a:forwards?'':'b')
 
     " When not in a string or comment ignore matches inside them.
