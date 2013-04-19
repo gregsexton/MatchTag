@@ -1,24 +1,22 @@
-# Readme
+# matchtag.vim
 
-This plugin highlights the matching HTML tag when the cursor is
-positioned on a tag. It works in much the same way as the MatchParen
-plugin.
+This plugin highlights the matching HTML or XML tag when the cursor is
+positioned on a tag. It works in much the same way as the MatchParen plugin.
 
 It was inspired by this question <http://stackoverflow.com/q/8168320/20388>.
 
 The latest 'release' is available on [vim.org](http://www.vim.org/scripts/script.php?script_id=3818).
-
-## Other file types
-
-To get this to work for file types other than html that use a similar
-tag structure (e.g XML) you can do something similar to this.
-
-    echo 'runtime! ftplugin/html.vim' > ~/.vim/ftplugin/xml.vim
-
-The xml.vim file demonstrated here is included with MatchTag.
 
 ## Screenshot
 
 Thanks to [ithaca.arpinum.org](http://ithaca.arpinum.org/) for this screenshot.
 
 ![Screenshot of MatchTag](http://www.gregsexton.org/images/matchtag/matchtag.jpg)
+
+## Installation
+
+If you don't have a preferred installation method I recommend using ![pathogen.vim](https://github.com/tpope/vim-pathogen). Then, you can simply run the following:
+
+    cd ~/.vim/bundle
+    git clone git@github.com:josephdpurcell/MatchTag.git
+
