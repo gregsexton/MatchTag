@@ -7,7 +7,7 @@ if exists("b:did_ftplugin")
 endif
 
 augroup matchhtmlparen
-  autocmd! CursorMoved,CursorMovedI,WinEnter <buffer> call s:Highlight_Matching_Pair()
+    autocmd! CursorMoved,CursorMovedI,WinEnter <buffer> call s:Highlight_Matching_Pair()
 augroup END
 
 fu! s:Highlight_Matching_Pair()
@@ -78,9 +78,9 @@ fu! s:SearchForMatchingTag(tagname, forwards)
 
     " The searchpairpos() timeout parameter was added in 7.2
     if v:version >= 702
-      return searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
+        return searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
     else
-      return searchpairpos(starttag, midtag, endtag, flags, skip, stopline)
+        return searchpairpos(starttag, midtag, endtag, flags, skip, stopline)
     endif
 endfu
 
@@ -96,3 +96,5 @@ fu! s:HighlightTagAtPosition(position)
                 \ .'\(\%' . line('.') . 'l<\zs[^<>]\{-}\ze\s[^<>]*\%' . col('.') . 'c.\{-}[\n>]\)/'
     let w:tag_hl_on = 1
 endfu
+
+" vim: set ts=8 sts=4 sw=4 expandtab :
