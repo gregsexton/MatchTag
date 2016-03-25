@@ -2,7 +2,7 @@
 " Maintainer:  Greg Sexton <gregsexton@gmail.com>
 " Credits: Bram Moolenar and the 'matchparen' plugin from which this draws heavily.
 
-if exists("b:did_ftplugin")
+if exists("b:did_plugin")
     finish
 endif
 
