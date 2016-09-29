@@ -37,7 +37,11 @@ fu! s:Get_target_postition()
     return position
 endfu
 
-fu! s:Jumpto_Matching_Pair()
+fu! s:Jumpto_Matching_Pair( vis )
+    if a:vis
+        echo 'visssss'
+        normal! gv
+    endif
     let position = s:Get_target_postition()
     if position == [ -1, -1]|return|endif
     call cursor(position)
@@ -109,6 +113,7 @@ fu! s:HighlightTagAtPosition(position)
     let w:tag_hl_on = 1
 endfu
 
-nmap % :<C-U>call <SID>Jumpto_Matching_Pair() <CR>
+nmap % :<C-U>call <SID>Jumpto_Matching_Pair(0) <CR>
+vmap % :<C-U>call <SID>Jumpto_Matching_Pair(1) <CR>
 
 " vim: set ts=8 sts=4 sw=4 expandtab :
