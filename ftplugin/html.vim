@@ -70,7 +70,7 @@ fu! s:SearchForMatchingTag(tagname, forwards)
     " When not in a string or comment ignore matches inside them.
     let skip ='synIDattr(synID(line("."), col("."), 0), "name") ' .
                 \ '=~?  "\\%(html\\|xml\\)String\\|\\%(html\\|xml\\)CommentPart"'
-    execute 'if' skip '| let skip = 0 | endif'
+    if skip | let skip = 0 | endif
 
     " Limit the search to lines visible in the window.
     let stopline = a:forwards ? line('w$') : line('w0')
