@@ -10,7 +10,7 @@ augroup matchhtmlparen
     autocmd! CursorMoved,CursorMovedI,WinEnter <buffer> call s:Highlight_Matching_Pair()
 augroup END
 
-fu! s:Highlight_Matching_Pair()
+fu! s:Get_target_postition()
     " Remove any previous match.
     if exists('w:tag_hl_on') && w:tag_hl_on
         2match none
@@ -20,18 +20,36 @@ fu! s:Highlight_Matching_Pair()
     " Avoid that we remove the popup menu.
     " Return when there are no colors (looks like the cursor jumps).
     if pumvisible() || (&t_Co < 8 && !has("gui_running"))
-        return
+        return [ -1, -1 ]
     endif
 
     "get html tag under cursor
     let tagname = s:GetCurrentCursorTag()
-    if tagname == ""|return|endif
+    if tagname == ""
+        return [ -1, -1 ]
+    endif
 
     if tagname[0] == '/'
         let position = s:SearchForMatchingTag(tagname[1:], 0)
     else
         let position = s:SearchForMatchingTag(tagname, 1)
     endif
+    return position
+endfu
+
+fu! s:Jumpto_Matching_Pair( vis )
+    if a:vis
+        echo 'visssss'
+        normal! gv
+    endif
+    let position = s:Get_target_postition()
+    if position == [ -1, -1]|return|endif
+    call cursor(position)
+endfu
+
+fu! s:Highlight_Matching_Pair()
+    let position = s:Get_target_postition()
+    if position == [ -1, -1]|return|endif
     call s:HighlightTagAtPosition(position)
 endfu
 
@@ -78,16 +96,14 @@ fu! s:SearchForMatchingTag(tagname, forwards)
 
     " The searchpairpos() timeout parameter was added in 7.2
     if v:version >= 702
-        return searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
+        let position = searchpairpos(starttag, midtag, endtag, flags, skip, stopline, timeout)
     else
-        return searchpairpos(starttag, midtag, endtag, flags, skip, stopline)
+        let position = searchpairpos(starttag, midtag, endtag, flags, skip, stopline)
     endif
+    return position
 endfu
 
 fu! s:HighlightTagAtPosition(position)
-    if a:position == [0, 0]
-        return
-    endif
 
     let [m_lnum, m_col] = a:position
     exe '2match MatchParen /\(\%' . m_lnum . 'l\%' . m_col .  'c<\zs.\{-}\ze[\n >]\)\|'
@@ -96,5 +112,8 @@ fu! s:HighlightTagAtPosition(position)
                 \ .'\(\%' . line('.') . 'l<\zs[^<>]\{-}\ze\s[^<>]*\%' . col('.') . 'c.\{-}[\n>]\)/'
     let w:tag_hl_on = 1
 endfu
+
+nmap % :<C-U>call <SID>Jumpto_Matching_Pair(0) <CR>
+vmap % :<C-U>call <SID>Jumpto_Matching_Pair(1) <CR>
 
 " vim: set ts=8 sts=4 sw=4 expandtab :
